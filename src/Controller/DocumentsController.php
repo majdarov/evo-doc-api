@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Contragent;
+use App\Entity\ContragentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,14 +17,29 @@ class DocumentsController extends AbstractController
         // return $this->render('documents/index.html.twig', [
         //     'controller_name' => 'DocumentsController',
         // ]);
-        $greet = '';
-        if ($name = $request->query->get('hello')) {
-            $greet = sprintf('<h1>Hello %s!</h1>', htmlspecialchars($name));
+        $cnts = $this->getDoctrine()->getRepository(Contragent::class)->findAll();
+        $cnts_li = "<ul>\n";
+        foreach($cnts as $cnt) {
+            $content = $cnt->getId()." -> ".$cnt->getCntName();
+            $cnts_li .= sprintf('<li>%s</li>'."\n", htmlspecialchars($content));
         }
+        $cnts_li .= "</ul>\n";
+
+        if ($type = $request->query->get('type')) {
+            $name = $this->getDoctrine()->getRepository(ContragentType::class)
+                ->findOneBy(['cnt_type' => $type])
+                ->getContragents()[0]
+                ->getCntName();
+        } else {
+            $name = 'Contragents';
+        }
+        $greet = sprintf("<h1>Type %s!</h1>", htmlspecialchars($name));
+
         return new Response(<<<EOF
         <html>
             <body>
             $greet
+            $cnts_li
                 <img src="images/under-construction.gif" alt="under construction">
             </body>
         </html>

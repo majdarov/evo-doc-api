@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Contragent;
 use App\Entity\ContragentType;
+use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -26,6 +27,12 @@ class AppFixtures extends Fixture
             $cnt->setCntInfo('Default '.$type);
             $manager->persist($cnt);
         }
+
+        $product = new Product();
+        $product
+            ->setProductName('Test product')
+            ->setCode(10000);
+        $manager->persist($product);
 
         $manager->flush();
     }
