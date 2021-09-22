@@ -5,25 +5,27 @@ namespace App\Controller;
 use App\Entity\Contragent;
 use App\Entity\ContragentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 class DocumentsController extends AbstractController
 {
+
+    private $twig;
+
+    public function __construct(Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
     #[Route('/', name: 'homepage')]
     public function index(Request $request): Response
     {
-        // return $this->render('documents/index.html.twig', [
-        //     'controller_name' => 'DocumentsController',
-        // ]);
+
         $cnts = $this->getDoctrine()->getRepository(Contragent::class)->findAll();
-        $cnts_li = "<ul>\n";
-        foreach($cnts as $cnt) {
-            $content = $cnt->getId()." -> ".$cnt->getCntName();
-            $cnts_li .= sprintf('<li>%s</li>'."\n", htmlspecialchars($content));
-        }
-        $cnts_li .= "</ul>\n";
 
         if ($type = $request->query->get('type')) {
             $name = $this->getDoctrine()->getRepository(ContragentType::class)
@@ -33,16 +35,23 @@ class DocumentsController extends AbstractController
         } else {
             $name = 'Contragents';
         }
-        $greet = sprintf("<h1>Type %s!</h1>", htmlspecialchars($name));
 
-        return new Response(<<<EOF
-        <html>
-            <body>
-            $greet
-            $cnts_li
-                <img src="images/under-construction.gif" alt="under construction">
-            </body>
-        </html>
-        EOF);
+        $arr_cnts = [];
+        foreach($cnts as $cnt) {
+            $arr_cnts[] = [
+                'name' => $cnt->getCntName(),
+                'type' => (string) $cnt->getCntType(),
+            ];
+        }
+
+        // return new JsonResponse($arr_cnts);
+
+        return new Response($this->twig->render('documents/index.html.twig', [
+            'cnts' => $cnts,
+            'name' => $name,
+            'controller_name' => 'DocumentsController',
+            'json' => json_encode($arr_cnts),
+        ]));
+
     }
 }

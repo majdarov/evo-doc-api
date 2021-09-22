@@ -36,6 +36,11 @@ class ContragentType
         $this->contragents = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->cnt_type;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

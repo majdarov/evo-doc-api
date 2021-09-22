@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -28,6 +30,67 @@ class Product
      * @ORM\Column(type="integer")
      */
     private $code;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $measure_name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $tax;
+
+    /**
+     * @ORM\Column(type="string", length=128)
+     */
+    private $product_type;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $allow_to_sell;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $article_number;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $cost_price;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $quantity;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ProductGroup::class, inversedBy="products")
+     */
+    private $parent_id;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="product", orphanRemoval=true)
+     */
+    private $barcodes;
+
+    public function __construct(string $measureName = 'шт')
+    {
+        $this->setMeasureName($measureName);
+        $this->barcodes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -57,4 +120,162 @@ class Product
 
         return $this;
     }
+
+    public function getMeasureName()
+    {
+        return $this->measure_name;
+    }
+
+    public function setMeasureName(string $measureName = ProductInterface::MEASURE_NAMES[0]): self
+    {
+        if (in_array($measureName, ProductInterface::MEASURE_NAMES)) {
+            $this->measure_name = $measureName;
+        } else {
+            $this->measure_name = ProductInterface::MEASURE_NAMES[0];
+        }
+
+        return $this;
+    }
+
+    public function getTax(): ?string
+    {
+        return $this->tax;
+    }
+
+    public function setTax(string $tax = ProductInterface::TAXES[0]): self
+    {
+        if (in_array($tax, ProductInterface::TAXES)){
+            $this->tax = $tax;
+        } else {
+            $this->tax = ProductInterface::TAXES[0];
+        }
+        return $this;
+    }
+
+    public function getProductType(): ?string
+    {
+        return $this->product_type;
+    }
+
+    public function setProductType(string $product_type): self
+    {
+        $this->product_type = $product_type;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(int $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getAllowToSell(): ?bool
+    {
+        return $this->allow_to_sell;
+    }
+
+    public function setAllowToSell(bool $allow_to_sell): self
+    {
+        $this->allow_to_sell = $allow_to_sell;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getArticleNumber(): ?string
+    {
+        return $this->article_number;
+    }
+
+    public function setArticleNumber(?string $article_number): self
+    {
+        $this->article_number = $article_number;
+
+        return $this;
+    }
+
+    public function getCostPrice(): ?float
+    {
+        return $this->cost_price;
+    }
+
+    public function setCostPrice(float $cost_price): self
+    {
+        $this->cost_price = $cost_price;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?float
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(float $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getParentId(): ?ProductGroup
+    {
+        return $this->parent_id;
+    }
+
+    public function setParentId(?ProductGroup $parent_id): self
+    {
+        $this->parent_id = $parent_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Barcode[]
+     */
+    public function getBarcodes(): Collection
+    {
+        return $this->barcodes;
+    }
+
+    public function addBarcode(Barcode $barcode): self
+    {
+        if (!$this->barcodes->contains($barcode)) {
+            $this->barcodes[] = $barcode;
+            $barcode->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBarcode(Barcode $barcode): self
+    {
+        if ($this->barcodes->removeElement($barcode)) {
+            // set the owning side to null (unless already changed)
+            if ($barcode->getProduct() === $this) {
+                $barcode->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

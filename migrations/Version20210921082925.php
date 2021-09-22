@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210910173849 extends AbstractMigration
+final class Version20210921082925 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -32,7 +32,7 @@ final class Version20210910173849 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN evo_document.id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN evo_document.cnt_seller_id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN evo_document.cnt_receiver_id IS \'(DC2Type:uuid)\'');
-        $this->addSql('CREATE TABLE product (id UUID NOT NULL, product_name VARCHAR(255) NOT NULL, code INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE product (id UUID NOT NULL, product_name VARCHAR(255) NOT NULL, code INT NOT NULL, measure_name VARCHAR(10) NOT NULL, tax VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('COMMENT ON COLUMN product.id IS \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE contragent ADD CONSTRAINT FK_2185188B14F65548 FOREIGN KEY (cnt_type_id) REFERENCES contragent_type (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE evo_document ADD CONSTRAINT FK_EDFFC182102B87C7 FOREIGN KEY (cnt_seller_id) REFERENCES contragent (id) NOT DEFERRABLE INITIALLY IMMEDIATE');

@@ -52,6 +52,11 @@ class Contragent
         $this->receivedDocuments = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->id.' -> '.$this->cnt_name.' - '.$this->cnt_type->getCntType();
+    }
+
     public function getId(): ?string
     {
         return $this->id;

@@ -31,7 +31,8 @@ class AppFixtures extends Fixture
         $product = new Product();
         $product
             ->setProductName('Test product')
-            ->setCode(10000);
+            ->setCode(10000)
+            ->setTax('NO_VAT');
         $manager->persist($product);
 
         $manager->flush();
