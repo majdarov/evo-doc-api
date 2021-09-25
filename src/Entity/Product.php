@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use App\Lib\ProductInterface;
+use App\Lib\TraitProduct;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,8 +13,9 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
-class Product
+class Product implements ProductInterface
 {
+    use TraitProduct;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -86,9 +89,11 @@ class Product
      */
     private $barcodes;
 
-    public function __construct(string $measureName = 'шт')
+    public function __construct()
     {
-        $this->setMeasureName($measureName);
+        $this->setMeasureName();
+        $this->setTax();
+        $this->setProductType();
         $this->barcodes = new ArrayCollection();
     }
 
@@ -126,12 +131,12 @@ class Product
         return $this->measure_name;
     }
 
-    public function setMeasureName(string $measureName = ProductInterface::MEASURE_NAMES[0]): self
+    public function setMeasureName(string $measureName = self::MEASURE_NAMES[0]): self
     {
-        if (in_array($measureName, ProductInterface::MEASURE_NAMES)) {
+        if (in_array($measureName, self::MEASURE_NAMES)) {
             $this->measure_name = $measureName;
         } else {
-            $this->measure_name = ProductInterface::MEASURE_NAMES[0];
+            $this->measure_name = self::MEASURE_NAMES[0];
         }
 
         return $this;
@@ -142,12 +147,12 @@ class Product
         return $this->tax;
     }
 
-    public function setTax(string $tax = ProductInterface::TAXES[0]): self
+    public function setTax(string $tax = self::TAXES[0]): self
     {
-        if (in_array($tax, ProductInterface::TAXES)){
+        if (in_array($tax, self::TAXES)){
             $this->tax = $tax;
         } else {
-            $this->tax = ProductInterface::TAXES[0];
+            $this->tax = self::TAXES[0];
         }
         return $this;
     }
@@ -157,9 +162,13 @@ class Product
         return $this->product_type;
     }
 
-    public function setProductType(string $product_type): self
+    public function setProductType(string $product_type = self::TYPES[0]): self
     {
-        $this->product_type = $product_type;
+        if (in_array($product_type, self::TYPES)) {
+            $this->product_type = $product_type;
+        } else {
+            $this->product_type = self::TYPES[0];
+        }
 
         return $this;
     }
