@@ -79,6 +79,11 @@ class Contragent
         return $this->cnt_type;
     }
 
+    public function getCntTypeString(): string
+    {
+        return $this->cnt_type->getCntType();
+    }
+
     public function setCntType(?ContragentType $cnt_type): self
     {
         $this->cnt_type = $cnt_type;
