@@ -2,5 +2,14 @@
   "workbench.colorCustomizations": {
   "[Monokai]": {}
   },
-  "workbench.colorTheme": "Monokai"
+  "workbench.colorTheme": "Monokai",
+  "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+  "editor.linkedEditing": true,
+  "editor.renderWhitespace": "none",
+  "diffEditor.codeLens": true,
+  "files.defaultLanguage": "php",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true
 }

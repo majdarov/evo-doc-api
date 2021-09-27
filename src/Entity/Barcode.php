@@ -12,26 +12,16 @@ class Barcode
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      */
     private $barcode;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="barcodes")
+     * @ORM\Id
+     * @ORM\ManyToOne(targetEntity=Product::class|Category::class, inversedBy="barcodes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $product;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getBarcode(): ?string
     {
@@ -45,12 +35,12 @@ class Barcode
         return $this;
     }
 
-    public function getProduct(): ?Product
+    public function getProduct(): Product|Category
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(Product|Category|null $product): self
     {
         $this->product = $product;
 

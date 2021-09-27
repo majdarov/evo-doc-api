@@ -22,9 +22,9 @@ class AppFixtures extends Fixture
             $manager->persist($cnt_type);
 
             $cnt = new Contragent();
-            $cnt->setCntName('Default '.$type);
+            $cnt->setCntName('Default ' . $type);
             $cnt->setCntType($cnt_type);
-            $cnt->setCntInfo('Default '.$type);
+            $cnt->setCntInfo('Default ' . $type);
             $manager->persist($cnt);
         }
 

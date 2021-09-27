@@ -2,7 +2,7 @@
 
 namespace App\Lib;
 
-trait TraitBarcode
+trait BarcodeTrait
 {
   public static function createBarcode(string $code, string $prefix = '0000'): ?string
   {

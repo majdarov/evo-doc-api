@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use App\Lib\ProductInterface;
-use App\Lib\TraitBarcode;
+use App\Lib\BarcodeTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +15,8 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
  */
 class Product implements ProductInterface
 {
-    use TraitBarcode;
+    use BarcodeTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -80,12 +81,12 @@ class Product implements ProductInterface
     private $quantity;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ProductGroup::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
      */
-    private $parent_id;
+    private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="product", orphanRemoval=true, cascade={"persist", "remove", "merge"})
      */
     private $barcodes;
 
@@ -149,7 +150,7 @@ class Product implements ProductInterface
 
     public function setTax(string $tax = self::TAXES[0]): self
     {
-        if (in_array($tax, self::TAXES)){
+        if (in_array($tax, self::TAXES)) {
             $this->tax = $tax;
         } else {
             $this->tax = self::TAXES[0];
@@ -245,14 +246,14 @@ class Product implements ProductInterface
         return $this;
     }
 
-    public function getParentId(): ?ProductGroup
+    public function getParent(): ?Category
     {
-        return $this->parent_id;
+        return $this->parent;
     }
 
-    public function setParentId(?ProductGroup $parent_id): self
+    public function setParent(?Category $parent): self
     {
-        $this->parent_id = $parent_id;
+        $this->parent = $parent;
 
         return $this;
     }
@@ -286,5 +287,4 @@ class Product implements ProductInterface
 
         return $this;
     }
-
 }

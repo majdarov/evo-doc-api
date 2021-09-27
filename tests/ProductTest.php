@@ -4,8 +4,8 @@ namespace App\Tests;
 
 use App\Entity\Product;
 use App\Entity\Barcode;
+use App\Lib\BarcodeTrait;
 use App\Lib\ProductInterface;
-use App\Lib\TraitBarcode;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +34,7 @@ class ProductTest extends TestCase
         $this->assertEquals('2000000000039', $product::createBarcode($product->getCode()));
         $this->assertEquals('2073210000038', $product::createBarcode($product->getCode(), '7321'));
         $this->assertEquals($product->getBarcodes()[0], $barcode);
-        $bc = TraitBarcode::createBarcode($product->getCode(), '7321');
+        $bc = BarcodeTrait::createBarcode($product->getCode(), '7321');
         $this->assertEquals('2073210000038', $bc);
 
         return $product;
@@ -57,7 +57,5 @@ class ProductTest extends TestCase
 
         $new_product = new Product($objectManager);
         $this->assertEquals('2073210000038', $new_product::createBarcode($product->getCode(), '7321'));
-
     }
-
 }
