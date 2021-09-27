@@ -20,12 +20,13 @@ class DocumentsController extends AbstractController
             $greet = sprintf('<h1>Hello %s!</h1>', htmlspecialchars($name));
         }
         return new Response(<<<EOF
-        <html>
-            <body>
-            $greet
-                <img src="images/under-construction.gif" alt="under construction">
-            </body>
-        </html>
-        EOF);
+<html>
+	<body>
+	$greet
+		<img src="images/under-construction.gif" alt="under construction">
+	</body>
+</html>
+EOF
+			);
     }
 }
