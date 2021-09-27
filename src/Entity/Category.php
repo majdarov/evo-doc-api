@@ -42,7 +42,7 @@ class Category
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="product")
+     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="instance")
      */
     private $barcodes;
 
@@ -153,7 +153,7 @@ class Category
     {
         if (!$this->barcodes->contains($barcode)) {
             $this->barcodes[] = $barcode;
-            $barcode->setProduct($this);
+            $barcode->setInstance($this);
         }
 
         return $this;
@@ -163,8 +163,8 @@ class Category
     {
         if ($this->barcodes->removeElement($barcode)) {
             // set the owning side to null (unless already changed)
-            if ($barcode->getProduct() === $this) {
-                $barcode->setProduct(null);
+            if ($barcode->getInstance() === $this) {
+                $barcode->setInstance(null);
             }
         }
 

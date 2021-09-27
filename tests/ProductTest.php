@@ -22,7 +22,7 @@ class ProductTest extends TestCase
             ->setCostPrice(2.00);
 
         $barcode = (new Barcode())
-            ->setProduct($product)
+            ->setInstance($product)
             ->setBarcode($product::createBarcode($product->getCode(), '7321'));
 
         $product->addBarcode($barcode);

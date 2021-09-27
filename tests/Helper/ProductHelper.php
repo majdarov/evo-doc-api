@@ -19,7 +19,7 @@ class ProductHelper
 
     $barcode = (new Barcode())
       ->setBarcode($product::createBarcode($product->getCode(), '7321'));
-    $barcode->setProduct($product);
+    $barcode->setInstance($product);
 
     return $product;
   }

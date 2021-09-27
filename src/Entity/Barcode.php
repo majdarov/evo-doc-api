@@ -21,7 +21,7 @@ class Barcode
      * @ORM\ManyToOne(targetEntity=Product::class|Category::class, inversedBy="barcodes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $product;
+    private $instance;
 
     public function getBarcode(): ?string
     {
@@ -35,14 +35,14 @@ class Barcode
         return $this;
     }
 
-    public function getProduct(): Product|Category
+    public function getInstance(): Product|Category
     {
-        return $this->product;
+        return $this->instance;
     }
 
-    public function setProduct(Product|Category|null $product): self
+    public function setInstance(Product|Category|null $instance): self
     {
-        $this->product = $product;
+        $this->product = $instance;
 
         return $this;
     }

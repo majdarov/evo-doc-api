@@ -86,7 +86,7 @@ class Product implements ProductInterface
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="product", orphanRemoval=true, cascade={"persist", "remove", "merge"})
+     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="instance", orphanRemoval=true, cascade={"persist", "remove", "merge"})
      */
     private $barcodes;
 
@@ -270,7 +270,7 @@ class Product implements ProductInterface
     {
         if (!$this->barcodes->contains($barcode)) {
             $this->barcodes[] = $barcode;
-            $barcode->setProduct($this);
+            $barcode->setInstance($this);
         }
 
         return $this;
@@ -280,8 +280,8 @@ class Product implements ProductInterface
     {
         if ($this->barcodes->removeElement($barcode)) {
             // set the owning side to null (unless already changed)
-            if ($barcode->getProduct() === $this) {
-                $barcode->setProduct(null);
+            if ($barcode->getInstance() === $this) {
+                $barcode->setInstance(null);
             }
         }
 
