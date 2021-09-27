@@ -6,6 +6,7 @@ use App\Repository\ContragentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=ContragentRepository::class)
@@ -14,8 +15,9 @@ class Contragent
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private $id;
 
@@ -50,7 +52,12 @@ class Contragent
         $this->receivedDocuments = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function __toString()
+    {
+        return $this->id.' -> '.$this->cnt_name.' - '.$this->cnt_type->getCntType();
+    }
+
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -70,6 +77,11 @@ class Contragent
     public function getCntType(): ?ContragentType
     {
         return $this->cnt_type;
+    }
+
+    public function getCntTypeString(): string
+    {
+        return $this->cnt_type->getCntType();
     }
 
     public function setCntType(?ContragentType $cnt_type): self
