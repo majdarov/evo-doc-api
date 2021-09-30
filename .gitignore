@@ -25,3 +25,7 @@ yarn-error.log
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> my_ignores ###
+ClassTest.php
+###< my_ignores###

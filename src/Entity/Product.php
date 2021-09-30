@@ -2,39 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
+use App\Entity\ProdCat;
 use App\Lib\ProductInterface;
-use App\Lib\BarcodeTrait;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
-class Product implements ProductInterface
+class Product extends ProdCat implements ProductInterface
 {
-    use BarcodeTrait;
-
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $product_name;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $code;
-
     /**
      * @ORM\Column(type="string", length=10)
      */
@@ -51,7 +28,7 @@ class Product implements ProductInterface
     private $product_type;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $price;
 
@@ -80,51 +57,12 @@ class Product implements ProductInterface
      */
     private $quantity;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
-     */
-    private $parent;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="instance", orphanRemoval=true, cascade={"persist", "remove", "merge"})
-     */
-    private $barcodes;
-
     public function __construct()
     {
+        parent::__construct();
         $this->setMeasureName();
         $this->setTax();
         $this->setProductType();
-        $this->barcodes = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getProductName(): ?string
-    {
-        return $this->product_name;
-    }
-
-    public function setProductName(string $product_name): self
-    {
-        $this->product_name = $product_name;
-
-        return $this;
-    }
-
-    public function getCode(): ?int
-    {
-        return $this->code;
-    }
-
-    public function setCode(int $code): self
-    {
-        $this->code = $code;
-
-        return $this;
     }
 
     public function getMeasureName()
@@ -242,48 +180,6 @@ class Product implements ProductInterface
     public function setQuantity(float $quantity): self
     {
         $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    public function getParent(): ?Category
-    {
-        return $this->parent;
-    }
-
-    public function setParent(?Category $parent): self
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Barcode[]
-     */
-    public function getBarcodes(): Collection
-    {
-        return $this->barcodes;
-    }
-
-    public function addBarcode(Barcode $barcode): self
-    {
-        if (!$this->barcodes->contains($barcode)) {
-            $this->barcodes[] = $barcode;
-            $barcode->setInstance($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBarcode(Barcode $barcode): self
-    {
-        if ($this->barcodes->removeElement($barcode)) {
-            // set the owning side to null (unless already changed)
-            if ($barcode->getInstance() === $this) {
-                $barcode->setInstance(null);
-            }
-        }
 
         return $this;
     }

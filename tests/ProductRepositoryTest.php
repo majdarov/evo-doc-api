@@ -2,10 +2,11 @@
 
 namespace App\Tests;
 
+use App\Entity\ProdCat;
 use App\Entity\Product;
-use App\Entity\Barcode;
+use App\Repository\ProdCatRepository;
+use App\Repository\ProductRepository;
 use App\Tests\Helper\ProductHelper;
-use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ProductRepositoryTest extends KernelTestCase
@@ -24,7 +25,7 @@ class ProductRepositoryTest extends KernelTestCase
             ->getManager();
     }
 
-    public function testWriteAndReadProduct(): void
+    public function testWriteAndReadProduct(): ?string
     {
         $kernel = self::bootKernel();
 
@@ -34,15 +35,54 @@ class ProductRepositoryTest extends KernelTestCase
 
         //write $product into DB
         $product = (new ProductHelper())->createProduct();
+
         $this->entityManager->persist($product);
         $this->entityManager->flush();
 
         //read $product from repsitory;
-        $read_product = $this->entityManager
-            ->getRepository(Product::class)
-            ->findOneBy(['product_name ' => $product->getProductName()]);
+        $repository = $this->entityManager
+            ->getRepository(Product::class);
+        $read_product = $repository->findOneBy(['instance_name' => $product->getName()]);
 
-        $this->assertEquals($product, $read_product);
+        $this->assertEquals($product->getId(), $read_product->getId());
+
+        //test barcode
+        $bc = $product::createBarcode($product->getCode(), '7321');
+        $read_bc = $read_product->getBarcodes()[0]->getBarcode();
+        $this->assertEquals($bc, $read_bc);
+
+        return $read_product->getId();
+    }
+
+    /**
+     * @depends testWriteAndReadProduct
+     * */
+    public function testUpdateDeleteProduct(string $id)
+    {
+        $kernel = self::bootKernel();
+        $this->assertSame('test', $kernel->getEnvironment());
+        $manager = $this->entityManager;
+
+        $repository = $manager->getRepository(Product::class);
+        // $product_for_update = $repository->findOneBy(['instance_name' => $product_name]);
+        // $this->assertEquals($product_name, $product_for_update->getName());
+
+        // test update product
+        $product_for_update = $manager->find(Product::class, $id);
+        $product_for_update->setName('test updated_name');
+        $manager->flush();
+
+        $updated_product = $repository->findOneBy(['instance_name' => $product_for_update->getName()]);
+        $this->assertIsObject($updated_product, 'not object');
+        if (\is_object($updated_product)) {
+            $this->assertEquals($product_for_update->getName(), $updated_product->getName());
+        }
+
+        // test delete(remove) product
+        $manager->remove($product_for_update);
+        $manager->flush();
+
+        $this->assertNull($manager->find(Product::class, $id));
     }
 
     protected function tearDown(): void

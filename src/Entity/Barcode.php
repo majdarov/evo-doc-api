@@ -18,7 +18,7 @@ class Barcode
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=Product::class|Category::class, inversedBy="barcodes")
+     * @ORM\ManyToOne(targetEntity=ProdCat::class, inversedBy="barcodes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $instance;
@@ -42,7 +42,7 @@ class Barcode
 
     public function setInstance(Product|Category|null $instance): self
     {
-        $this->product = $instance;
+        $this->instance = $instance;
 
         return $this;
     }

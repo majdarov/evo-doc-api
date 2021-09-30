@@ -2,9 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Contragent;
-use App\Entity\ContragentType;
-use App\Entity\Product;
+use App\Entity\{Barcode, Contragent, ContragentType, Product, Category};
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -12,8 +10,6 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        // $product = new Product();
-        // $manager->persist($product);
         $def_types = ['shiper', 'storage', 'shop', 'customer', 'write_of'];
 
         foreach ($def_types as $type) {
@@ -30,11 +26,26 @@ class AppFixtures extends Fixture
 
         $product = new Product();
         $product
-            ->setProductName('Test product')
+            ->setName('Test product')
             ->setCode(10000)
-            ->setTax('NO_VAT');
-        $manager->persist($product);
+            ->setAllowToSell(true)
+            ->setPrice(1.50)
+            ->setCostPrice(1.00)
+            ->setQuantity(1);
+        $product->addBarcode(
+            (new Barcode())
+                ->setBarcode($product::createBarcode(10000, '7321'))
+        );
+        $product->setParent(
+            (new Category())
+                ->setName('test category_1')
+                ->setCode(10500)
+        );
 
+        $manager->persist($product);
+        $manager->flush();
+
+        $product->setName($product->getName() . '_updated');
         $manager->flush();
     }
 }
