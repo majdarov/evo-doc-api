@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\EvoDocument;
+use App\Entity\Document;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method EvoDocument|null find($id, $lockMode = null, $lockVersion = null)
- * @method EvoDocument|null findOneBy(array $criteria, array $orderBy = null)
- * @method EvoDocument[]    findAll()
- * @method EvoDocument[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Document|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Document|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Document[]    findAll()
+ * @method Document[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EvoDocumentRepository extends ServiceEntityRepository
+class DocumentRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EvoDocument::class);
+        parent::__construct($registry, Document::class);
     }
 
     // /**
-    //  * @return EvoDocument[] Returns an array of EvoDocument objects
+    //  * @return Document[] Returns an array of Document objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class EvoDocumentRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?EvoDocument
+    public function findOneBySomeField($value): ?Document
     {
         return $this->createQueryBuilder('e')
             ->andWhere('e.exampleField = :val')

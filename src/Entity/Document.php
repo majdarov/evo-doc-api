@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\EvoDocumentRepository;
+use App\Repository\DocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
- * @ORM\Entity(repositoryClass=EvoDocumentRepository::class)
+ * @ORM\Entity(repositoryClass=DocumentRepository::class)
  */
-class EvoDocument
+class Document
 {
     /**
      * @ORM\Id
