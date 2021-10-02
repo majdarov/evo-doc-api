@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DocumentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
@@ -40,6 +42,16 @@ class Document
      * @ORM\JoinColumn(nullable=false)
      */
     private $cnt_receiver;
+
+    /**
+     * @ORM\OneToMany(targetEntity=DocProd::class, mappedBy="document")
+     */
+    private $products;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +102,36 @@ class Document
     public function setCntReceiver(?Contragent $cnt_receiver): self
     {
         $this->cnt_receiver = $cnt_receiver;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DocProd[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(DocProd $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setDocument($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(DocProd $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getDocument() === $this) {
+                $product->setDocument(null);
+            }
+        }
 
         return $this;
     }

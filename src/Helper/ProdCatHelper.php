@@ -5,14 +5,16 @@ namespace App\Helper;
 use App\Entity\Barcode;
 use App\Entity\Product;
 use App\Entity\Category;
-use phpDocumentor\Reflection\Types\Null_;
 
 class ProdCatHelper
 {
   public const BC_AUTO = 'bc-auto';
 
-  public static function createProduct(int $code, string $name, Barcode|string $bc = \null): ?Product
-  {
+  public static function createProduct(
+    int $code,
+    string $name,
+    Barcode|string $bc = \null
+  ): ?Product {
     $product = (new Product())
       ->setName($name)
       ->setCode($code)
@@ -32,8 +34,11 @@ class ProdCatHelper
     return $product;
   }
 
-  public static function createCategory(int $code, string $name, ?Category $parent): ?Category
-  {
+  public static function createCategory(
+    int $code,
+    string $name,
+    ?Category $parent
+  ): ?Category {
     $category = (new Category())
       ->setName($name)
       ->setCode($code);
