@@ -6,7 +6,7 @@ use App\Entity\ProdCat;
 use App\Entity\Product;
 use App\Repository\ProdCatRepository;
 use App\Repository\ProductRepository;
-use App\Tests\Helper\ProductHelper;
+use App\Helper\ProdCatHelper;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ProductRepositoryTest extends KernelTestCase
@@ -31,10 +31,13 @@ class ProductRepositoryTest extends KernelTestCase
 
         $this->assertSame('test', $kernel->getEnvironment());
         //$routerService = self::$container->get('router');
-        //$myCustomService = self::$container->get(CustomService::class);
+        //$myCustomService = self::$container->get(CustomService::class);,
 
         //write $product into DB
-        $product = (new ProductHelper())->createProduct();
+        $helper = new ProdCatHelper();
+        $product = $helper::createProduct(10000, 'test_product', $helper::BC_AUTO);
+
+        $product->setParent($helper::createCategory(100500, 'test category_1', \null));
 
         $this->entityManager->persist($product);
         $this->entityManager->flush();
@@ -64,8 +67,6 @@ class ProductRepositoryTest extends KernelTestCase
         $manager = $this->entityManager;
 
         $repository = $manager->getRepository(Product::class);
-        // $product_for_update = $repository->findOneBy(['instance_name' => $product_name]);
-        // $this->assertEquals($product_name, $product_for_update->getName());
 
         // test update product
         $product_for_update = $manager->find(Product::class, $id);

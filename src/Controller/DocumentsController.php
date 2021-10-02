@@ -21,7 +21,7 @@ class DocumentsController extends AbstractController
         $this->twig = $twig;
     }
 
-    #[Route('/', name: 'homepage')]
+    #[Route('/documents', name: 'documents')]
     public function index(Request $request): Response
     {
 
