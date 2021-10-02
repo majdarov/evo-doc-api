@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-class DocumentsController extends AbstractController
+class DocumentController extends AbstractController
 {
 
     private $twig;
@@ -21,7 +21,7 @@ class DocumentsController extends AbstractController
         $this->twig = $twig;
     }
 
-    #[Route('/documents', name: 'documents')]
+    #[Route('/document', name: 'document')]
     public function index(Request $request): Response
     {
 
@@ -46,10 +46,10 @@ class DocumentsController extends AbstractController
 
         // return new JsonResponse($arr_cnts);
 
-        return new Response($this->twig->render('documents/index.html.twig', [
+        return new Response($this->twig->render('document/index.html.twig', [
             'cnts' => $cnts,
             'name' => $name,
-            'controller_name' => 'DocumentsController',
+            'controller_name' => 'DocumentController',
             'json' => json_encode($arr_cnts),
         ]));
 
