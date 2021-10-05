@@ -2,10 +2,9 @@
 
 namespace App\Tests;
 
+use App\Entity\Category;
 use App\Entity\ProdCat;
 use App\Entity\Product;
-use App\Repository\ProdCatRepository;
-use App\Repository\ProductRepository;
 use App\Helper\ProdCatHelper;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -82,8 +81,18 @@ class ProductRepositoryTest extends KernelTestCase
         // test delete(remove) product
         $manager->remove($product_for_update);
         $manager->flush();
-
         $this->assertNull($manager->find(Product::class, $id));
+
+        $repository = $manager->getRepository(Category::class);
+        $category_for_delete = $repository
+            ->findOneBy(['code' => 100500]);
+        $this->assertIsObject($category_for_delete);
+        if (\is_object($category_for_delete)) {
+            $category_id = $category_for_delete->getId();
+            $manager->remove($manager->find(Category::class, $category_id));
+            $manager->flush();
+            $this->assertNull($manager->find(Category::class, $category_id));
+        }
     }
 
     protected function tearDown(): void

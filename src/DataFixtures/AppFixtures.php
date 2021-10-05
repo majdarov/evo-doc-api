@@ -23,14 +23,14 @@ class AppFixtures extends Fixture
             $cnt = new Contragent();
             $cnt->setCntName('Default ' . $type);
             $cnt->setCntType($cnt_type);
-            $cnt->setCntInfo('Default ' . $type);
+            $cnt->setCntInfo('Default ' . $type . ' info');
             $manager->persist($cnt);
         }
 
 
             $category = $helper->createCategory(10500, 'Category 10500', \null);
             $manager->persist($category);
-            $category2 = $helper->createCategory(10500, 'Category 10500 2', \null);
+            $category2 = $helper->createCategory(10501, 'Category 10500 2', \null);
             $manager->persist($category2);
 
             for ($j = 0; $j < 20; $j++) {
