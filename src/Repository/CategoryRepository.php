@@ -7,10 +7,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ProductGroup|null find($id, $lockMode = null, $lockVersion = null)
- * @method ProductGroup|null findOneBy(array $criteria, array $orderBy = null)
- * @method ProductGroup[]    findAll()
- * @method ProductGroup[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Category|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Category|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Category[]    findAll()
+ * @method Category[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CategoryRepository extends ServiceEntityRepository
 {
@@ -19,8 +19,18 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    public function getCategoryArray()
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
+            'SELECT c
+            FROM App\Entity\Category c'
+        );
+        return $query->getArrayResult();
+    }
+
     // /**
-    //  * @return ProductGroup[] Returns an array of ProductGroup objects
+    //  * @return Category[] Returns an array of Category objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +47,7 @@ class CategoryRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ProductGroup
+    public function findOneBySomeField($value): ?Category
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')

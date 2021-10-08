@@ -37,12 +37,12 @@ class Contragent
     private $cnt_info;
 
     /**
-     * @ORM\OneToMany(targetEntity=EvoDocument::class, mappedBy="cnt_seller")
+     * @ORM\OneToMany(targetEntity=Document::class, mappedBy="cnt_seller")
      */
     private $sentDocuments;
 
     /**
-     * @ORM\OneToMany(targetEntity=EvoDocument::class, mappedBy="cnt_receiver")
+     * @ORM\OneToMany(targetEntity=Document::class, mappedBy="cnt_receiver")
      */
     private $receivedDocuments;
 
@@ -104,14 +104,14 @@ class Contragent
     }
 
     /**
-     * @return Collection|EvoDocument[]
+     * @return Collection|Document[]
      */
     public function getSentDocuments(): Collection
     {
         return $this->sentDocuments;
     }
 
-    public function addSentDocument(EvoDocument $sentDocument): self
+    public function addSentDocument(Document $sentDocument): self
     {
         if (!$this->sentDocuments->contains($sentDocument)) {
             $this->sentDocuments[] = $sentDocument;
@@ -121,7 +121,7 @@ class Contragent
         return $this;
     }
 
-    public function removeSentDocument(EvoDocument $sentDocument): self
+    public function removeSentDocument(Document $sentDocument): self
     {
         if ($this->sentDocuments->removeElement($sentDocument)) {
             // set the owning side to null (unless already changed)
@@ -134,14 +134,14 @@ class Contragent
     }
 
     /**
-     * @return Collection|EvoDocument[]
+     * @return Collection|Document[]
      */
     public function getReceivedDocuments(): Collection
     {
         return $this->receivedDocuments;
     }
 
-    public function addReceivedDocument(EvoDocument $receivedDocument): self
+    public function addReceivedDocument(Document $receivedDocument): self
     {
         if (!$this->receivedDocuments->contains($receivedDocument)) {
             $this->receivedDocuments[] = $receivedDocument;
@@ -151,7 +151,7 @@ class Contragent
         return $this;
     }
 
-    public function removeReceivedDocument(EvoDocument $receivedDocument): self
+    public function removeReceivedDocument(Document $receivedDocument): self
     {
         if ($this->receivedDocuments->removeElement($receivedDocument)) {
             // set the owning side to null (unless already changed)

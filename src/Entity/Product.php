@@ -5,7 +5,10 @@ namespace App\Entity;
 use App\Entity\ProdCat;
 use App\Lib\ProductInterface;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -15,16 +18,19 @@ class Product extends ProdCat implements ProductInterface
     /**
      * @ORM\Column(type="string", length=10)
      */
+    #[Assert\Choice(choices: self::MEASURE_NAMES, message: 'Choose one from ')]
     private $measure_name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Assert\Choice(choices: self::TAXES, message: 'Choose one from ')]
     private $tax;
 
     /**
      * @ORM\Column(type="string", length=128)
      */
+    #[Assert\Choice(choices: self::TYPES, message: 'Choose one from ')]
     private $product_type;
 
     /**
@@ -57,12 +63,18 @@ class Product extends ProdCat implements ProductInterface
      */
     private $quantity;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DocProd::class, mappedBy="product")
+     */
+    private $documents;
+
     public function __construct()
     {
         parent::__construct();
         $this->setMeasureName();
         $this->setTax();
         $this->setProductType();
+        $this->documents = new ArrayCollection();
     }
 
     public function getMeasureName()
@@ -180,6 +192,36 @@ class Product extends ProdCat implements ProductInterface
     public function setQuantity(float $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DocProd[]
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(DocProd $document): self
+    {
+        if (!$this->documents->contains($document)) {
+            $this->documents[] = $document;
+            $document->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(DocProd $document): self
+    {
+        if ($this->documents->removeElement($document)) {
+            // set the owning side to null (unless already changed)
+            if ($document->getProduct() === $this) {
+                $document->setProduct(null);
+            }
+        }
 
         return $this;
     }

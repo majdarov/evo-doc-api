@@ -39,7 +39,7 @@ class ProdCat
    protected $code;
 
    /**
-    * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="members", cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="members", cascade={"persist", "merge"})
     */
    protected $parent;
 
