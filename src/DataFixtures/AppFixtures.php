@@ -27,21 +27,26 @@ class AppFixtures extends Fixture
             $manager->persist($cnt);
         }
 
+        for ($i = 0; $i < 2; $i++) {
+            ${"category$i"} = $helper->createCategory(10500 + $i, 'Category 1050'.$i, \null);
+            ${"category$i"}->addBarcode(
+                (new Barcode)
+                    ->setBarcode(
+                        ${"category$i"}::createBarcode('1050'.$i, '7777')
+                    )
+            );
+            $manager->persist(${"category$i"});
+        }
 
-            $category = $helper->createCategory(10500, 'Category 10500', \null);
-            $manager->persist($category);
-            $category2 = $helper->createCategory(10501, 'Category 10500 2', \null);
-            $manager->persist($category2);
-
-            for ($j = 0; $j < 20; $j++) {
-                $product = $helper->createProduct(10000 + $j, 'Product ' . (10000 + $j), $helper::BC_AUTO);
-                if ($j % 3 === 0) {
-                    $product->setParent($category);
-                } elseif ($j % 2 === 0) {
-                    $product->setParent($category2);
-                }
-                $manager->persist($product);
+        for ($j = 0; $j < 20; $j++) {
+            $product = $helper->createProduct(10000 + $j, 'Product ' . (10000 + $j), $helper::BC_AUTO);
+            if ($j % 3 === 0) {
+                $product->setParent($category0);
+            } elseif ($j % 2 === 0) {
+                $product->setParent($category1);
             }
-            $manager->flush();
+            $manager->persist($product);
+        }
+        $manager->flush();
     }
 }

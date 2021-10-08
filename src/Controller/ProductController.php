@@ -33,7 +33,7 @@ class ProductController extends AbstractController
         return $this->render('product/index.html.twig', [
             'controller_name' => 'ProductController',
             'json_string' => \json_encode($arr_products),
-            'products' => $arr_products,
+            'products' => $products,
         ]);
     }
 }
