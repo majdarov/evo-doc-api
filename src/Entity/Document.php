@@ -2,14 +2,25 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\DocumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass=DocumentRepository::class)
+ *
+ * @ApiResource(
+ *  collectionOperations={"get"={"normalization_context"={"groups"="document:list"}}},
+ *  itemOperations={"get"={"normalization_context"={"groups"="document:item"}}},
+ *  order={"doc_date"="DESC"},
+ *  paginationEnabled=false
+ * )
+ *
  */
 class Document
 {
@@ -19,33 +30,39 @@ class Document
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
+    #[Groups(['document:list', 'document:item'])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(['document:list', 'document:item'])]
     private $doc_num;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime_immutable")
      */
+    #[Groups(['document:list', 'document:item'])]
     private $doc_date;
 
     /**
      * @ORM\ManyToOne(targetEntity=Contragent::class, inversedBy="sentDocuments")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['document:list', 'document:item'])]
     private $cnt_seller;
 
     /**
      * @ORM\ManyToOne(targetEntity=Contragent::class, inversedBy="receivedDocuments")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['document:list', 'document:item'])]
     private $cnt_receiver;
 
     /**
      * @ORM\OneToMany(targetEntity=DocProd::class, mappedBy="document")
      */
+    #[Groups(['document:item'])]
     private $products;
 
     public function __construct()
@@ -53,7 +70,7 @@ class Document
         $this->products = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -70,12 +87,12 @@ class Document
         return $this;
     }
 
-    public function getDocDate(): ?\DateTimeInterface
+    public function getDocDate(): ?\DateTimeImmutable
     {
         return $this->doc_date;
     }
 
-    public function setDocDate(\DateTimeInterface $doc_date): self
+    public function setDocDate(\DateTimeImmutable $doc_date): self
     {
         $this->doc_date = $doc_date;
 

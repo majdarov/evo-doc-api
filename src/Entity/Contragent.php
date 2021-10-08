@@ -54,7 +54,7 @@ class Contragent
 
     public function __toString()
     {
-        return $this->id.' -> '.$this->cnt_name.' - '.$this->cnt_type->getCntType();
+        return $this->cnt_name;
     }
 
     public function getId(): ?string
