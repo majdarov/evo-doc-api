@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -26,26 +27,31 @@ class ProdCat
     * @ORM\Column(type="uuid", unique=true)
     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
     */
+   #[Groups('product')]
    protected $id;
 
    /**
     * @ORM\Column(type="string", length=255)
     */
+   #[Groups('product')]
    protected $instance_name;
 
    /**
     * @ORM\Column(type="integer")
     */
+   #[Groups('product')]
    protected $code;
 
    /**
     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="members", cascade={"persist", "merge"})
     */
+   #[Groups('product')]
    protected $parent;
 
    /**
     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="instance", orphanRemoval=true, cascade={"persist", "remove", "merge"})
     */
+   #[Groups('product')]
    protected $barcodes;
 
    public function __construct()

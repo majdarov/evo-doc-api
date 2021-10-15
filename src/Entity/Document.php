@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\DocumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,15 +14,8 @@ use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass=DocumentRepository::class)
- *
- * @ApiResource(
- *  collectionOperations={"get"={"normalization_context"={"groups"="document:list"}}},
- *  itemOperations={"get"={"normalization_context"={"groups"="document:item"}}},
- *  order={"doc_date"="DESC"},
- *  paginationEnabled=false
- * )
- *
  */
+#[ApiResource()]
 class Document
 {
     /**
@@ -30,39 +24,33 @@ class Document
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
-    #[Groups(['document:list', 'document:item'])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    #[Groups(['document:list', 'document:item'])]
     private $doc_num;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    #[Groups(['document:list', 'document:item'])]
     private $doc_date;
 
     /**
      * @ORM\ManyToOne(targetEntity=Contragent::class, inversedBy="sentDocuments")
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups(['document:list', 'document:item'])]
-    private $cnt_seller;
+    private ?Contragent $cnt_seller;
 
     /**
      * @ORM\ManyToOne(targetEntity=Contragent::class, inversedBy="receivedDocuments")
      * @ORM\JoinColumn(nullable=false)
      */
-    #[Groups(['document:list', 'document:item'])]
-    private $cnt_receiver;
+    private ?Contragent $cnt_receiver;
 
     /**
      * @ORM\OneToMany(targetEntity=DocProd::class, mappedBy="document")
      */
-    #[Groups(['document:item'])]
     private $products;
 
     public function __construct()

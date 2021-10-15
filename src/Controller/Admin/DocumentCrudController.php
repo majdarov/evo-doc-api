@@ -40,7 +40,7 @@ class DocumentCrudController extends AbstractCrudController
                 'widget' => 'single_text',
             ]);
         if (Crud::PAGE_EDIT === $pageName) {
-            yield $$docDate->setFormTypeOption('disabled', true);
+            yield $docDate->setFormTypeOption('disabled', true);
         } else {
             yield $docDate;
         }

@@ -34,6 +34,7 @@ class ProductController extends AbstractController
             'controller_name' => 'ProductController',
             'json_string' => \json_encode($arr_products),
             'products' => $products,
+            'arr_products' => $arr_products,
         ]);
     }
 }
