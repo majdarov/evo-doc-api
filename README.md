@@ -13,7 +13,7 @@
     - *doc_date* `\DateTimeImmutable`
     - *seller* `App\Entity\Contragent`
     - *receiver* `App\Entity\Contragent`
-    - *products* [App\Entity\DocProd]
+    - *products* array(`App\Entity\DocProd`)
         - product_id `uuid`
         - price `float`
         - amount `float`
