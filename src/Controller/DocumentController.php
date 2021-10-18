@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Contragent;
-use App\Entity\ContragentType;
+use App\Entity\{Contragent, DocProd, Document, Product};
+use App\Helper\DocumentHelper;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,32 +26,28 @@ class DocumentController extends AbstractController
     public function index(Request $request): Response
     {
 
-        $cnts = $this->getDoctrine()->getRepository(Contragent::class)->findAll();
+        $docs = $this->getDoctrine()->getRepository(Document::class)->findAll();
 
-        if ($type = $request->query->get('type')) {
-            $name = $this->getDoctrine()->getRepository(ContragentType::class)
-                ->findOneBy(['cnt_type' => $type])
-                ->getContragents()[0]
-                ->getCntName();
-        } else {
-            $name = 'Contragents';
-        }
+        $name = 'Documents';
 
-        $arr_cnts = [];
-        foreach($cnts as $cnt) {
-            $arr_cnts[] = [
-                'name' => $cnt->getCntName(),
-                'type' => (string) $cnt->getCntType(),
+        $arr_docs = [];
+        foreach($docs as $doc) {
+            $arr_docs[] = [
+                'doc_num' => $doc->getDocNum(),
+                'date' => $doc->getDocDate()->format(DateTimeImmutable::RSS),
+                'seller' => $doc->getCntSeller()->getCntName(),
+                'receiver' => $doc->getCntReceiver()->getCntName(),
             ];
         }
 
         // return new JsonResponse($arr_cnts);
 
         return new Response($this->twig->render('document/index.html.twig', [
-            'cnts' => $cnts,
+            'docs' => $docs,
             'name' => $name,
             'controller_name' => 'DocumentController',
-            'json' => json_encode($arr_cnts),
+            'json' => json_encode($arr_docs),
+            'format_date' => 'd.m.Y',
         ]));
 
     }

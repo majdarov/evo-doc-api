@@ -12,14 +12,14 @@ class DocProd
 {
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=Document::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=Document::class, inversedBy="products", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $document;
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="documents")
+     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="documents", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $product;

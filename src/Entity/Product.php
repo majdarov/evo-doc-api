@@ -10,12 +10,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 #[ApiResource(
-    normalizationContext:['groups' => 'product']
+    normalizationContext: ['groups' => 'product']
 )]
 class Product extends ProdCat implements ProductInterface
 {
@@ -23,53 +24,63 @@ class Product extends ProdCat implements ProductInterface
      * @ORM\Column(type="string", length=10)
      */
     #[Assert\Choice(choices: self::MEASURE_NAMES, message: 'Choose one from ')]
+    #[Groups('product')]
     private $measure_name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     #[Assert\Choice(choices: self::TAXES, message: 'Choose one from ')]
+    #[Groups('product')]
     private $tax;
 
     /**
      * @ORM\Column(type="string", length=128)
      */
     #[Assert\Choice(choices: self::TYPES, message: 'Choose one from ')]
+    #[Groups('product')]
     private $product_type;
 
     /**
      * @ORM\Column(type="float")
      */
+    #[Groups('product')]
     private $price;
 
     /**
      * @ORM\Column(type="boolean")
      */
+    #[Groups('product')]
     private $allow_to_sell;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups('product')]
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups('product')]
     private $article_number;
 
     /**
      * @ORM\Column(type="float")
      */
+    #[Groups('product')]
     private $cost_price;
 
     /**
      * @ORM\Column(type="float")
      */
+    #[Groups('product')]
     private $quantity;
 
     /**
      * @ORM\OneToMany(targetEntity=DocProd::class, mappedBy="product")
      */
+    #[Groups('product')]
     private $documents;
 
     public function __construct()

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Entity\ProdCat;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,12 +13,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
-#[ApiResource()]
+#[ApiResource(
+    collectionOperations:[
+        'get' => ['normalization_context' => ['groups' => 'category']]
+    ],
+    itemOperations:[
+        'get' => ['normalization_context' => ['groups' => 'category:item']]
+    ]
+)]
 class Category extends ProdCat
 {
     /**
      * @ORM\OneToMany(targetEntity=ProdCat::class, mappedBy="parent")
      */
+    #[Groups('category:item')]
     private $members;
 
     public function __construct()

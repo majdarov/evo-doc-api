@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BarcodeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=BarcodeRepository::class)
@@ -14,6 +15,7 @@ class Barcode
      * @ORM\Id
      * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      */
+    #[Groups(['product', 'category', 'category:item'])]
     private $barcode;
 
     /**

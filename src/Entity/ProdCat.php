@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Lib\BarcodeTrait;
 use App\Repository\ProdCatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,31 +28,31 @@ class ProdCat
     * @ORM\Column(type="uuid", unique=true)
     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
     */
-   #[Groups('product')]
+   #[Groups(['product', 'category', 'category:item'])]
    protected $id;
 
    /**
     * @ORM\Column(type="string", length=255)
     */
-   #[Groups('product')]
    protected $instance_name;
 
    /**
     * @ORM\Column(type="integer")
     */
-   #[Groups('product')]
+   #[Groups(['product', 'category', 'category:item'])]
    protected $code;
 
    /**
     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="members", cascade={"persist", "merge"})
     */
-   #[Groups('product')]
+   #[Groups(['product', 'category', 'category:item'])]
+   #[ApiProperty(readableLink: false, writableLink: false)]
    protected $parent;
 
    /**
     * @ORM\OneToMany(targetEntity=Barcode::class, mappedBy="instance", orphanRemoval=true, cascade={"persist", "remove", "merge"})
     */
-   #[Groups('product')]
+   #[Groups(['product', 'category', 'category:item'])]
    protected $barcodes;
 
    public function __construct()
@@ -64,6 +65,7 @@ class ProdCat
       return $this->id;
    }
 
+   #[Groups(['product', 'category', 'category:item'])]
    public function getName(): ?string
    {
       return $this->instance_name;

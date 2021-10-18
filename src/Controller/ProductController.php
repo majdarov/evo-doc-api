@@ -29,12 +29,12 @@ class ProductController extends AbstractController
                 'barcodes' => $barcodes,
             ];
         }
-        // return new JsonResponse($arr_products);
-        return $this->render('product/index.html.twig', [
-            'controller_name' => 'ProductController',
-            'json_string' => \json_encode($arr_products),
-            'products' => $products,
-            'arr_products' => $arr_products,
-        ]);
+        return new JsonResponse($arr_products);
+        // return $this->render('product/index.html.twig', [
+        //     'controller_name' => 'ProductController',
+        //     'json_string' => \json_encode($arr_products),
+        //     'products' => $products,
+        //     'arr_products' => $arr_products,
+        // ]);
     }
 }

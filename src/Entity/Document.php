@@ -49,7 +49,7 @@ class Document
     private ?Contragent $cnt_receiver;
 
     /**
-     * @ORM\OneToMany(targetEntity=DocProd::class, mappedBy="document")
+     * @ORM\OneToMany(targetEntity=DocProd::class, mappedBy="document", cascade={"persist"})
      */
     private $products;
 
