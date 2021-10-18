@@ -12,11 +12,10 @@
     - doc_date `\DateTimeImmutable`
     - seller `App\Entity\Contragent`
     - receiver`App\Entity\Contragent`
-    - products [
-        - product_id
+    - products
+        - product_id `uuid`
         - price `float`
         - amount `float`
-    ]
 
 ## Тесты
 
