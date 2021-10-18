@@ -6,7 +6,7 @@
 ##  Сущности
 
 ### Документы 
-- *Document*:
+- **Document**:
     - *id* `uuid`
     - *doc_num* `string`
     - *doc_date* `\DateTimeImmutable`
