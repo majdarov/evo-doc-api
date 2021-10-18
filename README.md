@@ -1,22 +1,28 @@
-#  Приложение evo-doc-api v0.0.1 
-## Приложение и API товарного учета 
+#  Приложение evo-doc-api v0.0.1
+## Приложение и API товарного учета
 
 автор: majdarov@gmail.com
 
 ##  Сущности
 
-### Документы 
+### Документы
+
 - **Document**:
     - *id* `uuid`
     - *doc_num* `string`
     - *doc_date* `\DateTimeImmutable`
     - *seller* `App\Entity\Contragent`
     - *receiver* `App\Entity\Contragent`
-    - *products*
+    - *products* [App\Entity\DocProd]
         - product_id `uuid`
         - price `float`
         - amount `float`
-- DocProd:
+
+- **DocProd**:
+    - *document_id* `uuid`
+    - *product_id* `uuid`
+    - *price* `float`
+    - *amount* `float`
 
 ## Тесты
 
