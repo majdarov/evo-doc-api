@@ -9,22 +9,22 @@
 
 ***************
 **Document**: `App\Entity\Document`
-    - *id* `uuid`
-    - *doc_num* `string`
-    - *doc_date* `\DateTimeImmutable`
-    - *seller* `App\Entity\Contragent`
-    - *receiver* `App\Entity\Contragent`
-    - *products* array(`App\Entity\DocProd`)
-        - product_id `uuid`
-        - price `float`
-        - amount `float`
+- *id* `uuid`
+- *doc_num* `string`
+- *doc_date* `\DateTimeImmutable`
+- *seller* `App\Entity\Contragent`
+- *receiver* `App\Entity\Contragent`
+- *products* array(`App\Entity\DocProd`)
+    - product_id `uuid`
+    - price `float`
+    - amount `float`
 
 ***************
 **DocProd**: `App\Entity\DocProd`
-    - *document_id* `uuid`
-    - *product_id* `uuid`
-    - *price* `float`
-    - *amount* `float`
+- *document_id* `uuid`
+- *product_id* `uuid`
+- *price* `float`
+- *amount* `float`
 ***************
 
 ## Тесты
