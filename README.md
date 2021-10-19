@@ -7,7 +7,8 @@
 
 ### Документы
 
-- **Document**:
+***************
+**Document**: `App\Entity\Document`
     - *id* `uuid`
     - *doc_num* `string`
     - *doc_date* `\DateTimeImmutable`
@@ -18,11 +19,13 @@
         - price `float`
         - amount `float`
 
-- **DocProd**:
+***************
+**DocProd**: `App\Entity\DocProd`
     - *document_id* `uuid`
     - *product_id* `uuid`
     - *price* `float`
     - *amount* `float`
+***************
 
 ## Тесты
 
