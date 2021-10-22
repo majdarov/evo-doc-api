@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use App\Repository\DocProdRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=DocProdRepository::class)
@@ -15,6 +17,8 @@ class DocProd
      * @ORM\ManyToOne(targetEntity=Document::class, inversedBy="products", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['product'])]
+    #[ApiProperty(writableLink: \false, readableLink: \false)]
     private $document;
 
     /**
@@ -22,16 +26,19 @@ class DocProd
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="documents", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(['document:item'])]
     private $product;
 
     /**
      * @ORM\Column(type="float")
      */
+    #[Groups(['document:item'])]
     private $price;
 
     /**
      * @ORM\Column(type="float")
      */
+    #[Groups(['document:item'])]
     private $amount;
 
     public function getDocument(): ?Document

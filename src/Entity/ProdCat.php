@@ -28,7 +28,7 @@ class ProdCat
     * @ORM\Column(type="uuid", unique=true)
     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
     */
-   #[Groups(['product', 'category', 'category:item'])]
+   #[Groups(['product', 'category', 'category:item', 'document:item'])]
    protected $id;
 
    /**
