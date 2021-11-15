@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+
 use App\Entity\ProdCat;
 use App\Lib\ProductInterface;
 use App\Repository\ProductRepository;
@@ -10,62 +11,40 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ProductRepository::class)
- */
+#[ORM\Entity(repositoryClass: 'ProductRepository')]
 class Product extends ProdCat implements ProductInterface
 {
-    /**
-     * @ORM\Column(type="string", length=10)
-     */
+    #[ORM\Column(type: "string", length: 10)]
     #[Assert\Choice(choices: self::MEASURE_NAMES, message: 'Choose one from ')]
     private $measure_name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
     #[Assert\Choice(choices: self::TAXES, message: 'Choose one from ')]
     private $tax;
 
-    /**
-     * @ORM\Column(type="string", length=128)
-     */
+    #[ORM\Column(type: "string", length: 128)]
     #[Assert\Choice(choices: self::TYPES, message: 'Choose one from ')]
     private $product_type;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: "float")]
     private $price;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private $allow_to_sell;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private $article_number;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: "float")]
     private $cost_price;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: "float")]
     private $quantity;
 
-    /**
-     * @ORM\OneToMany(targetEntity=DocProd::class, mappedBy="product")
-     */
+    #[ORM\OneToMany(targetEntity: 'DocProd', mappedBy: "product")]
     private $documents;
 
     public function __construct()

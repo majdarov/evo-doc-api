@@ -7,14 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- */
+#[ORM\Entity(repositoryClass: 'CategoryRepository')]
 class Category extends ProdCat
 {
-    /**
-     * @ORM\OneToMany(targetEntity=ProdCat::class, mappedBy="parent")
-     */
+    #[ORM\OneToMany(targetEntity: 'ProdCat', mappedBy: "parent")]
     private $members;
 
     public function __construct()

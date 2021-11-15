@@ -5,23 +5,16 @@ namespace App\Entity;
 use App\Repository\BarcodeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=BarcodeRepository::class)
- */
+#[ORM\Entity(repositoryClass: 'BarcodeRepository')]
 class Barcode
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'string', length: 255, unique: \true, nullable: \false)]
     private $barcode;
 
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=ProdCat::class, inversedBy="barcodes")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $instance;
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: 'ProdCat', inversedBy: 'barcodes')]
+    private ?ProdCat $instance;
 
     public function getBarcode(): ?string
     {
