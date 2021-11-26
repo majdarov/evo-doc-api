@@ -8,44 +8,28 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=DocumentRepository::class)
- */
+#[ORM\Entity(repositoryClass: DocumentRepository::class)]
 class Document
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\Column(type: 'uuid', unique: \true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: \true)]
     private $doc_num;
 
-    /**
-     * @ORM\Column(type="date")
-     */
+    #[ORM\Column(type: 'date')]
     private $doc_date;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Contragent::class, inversedBy="sentDocuments")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Contragent::class, inversedBy: 'sentDocuments')]
     private $cnt_seller;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Contragent::class, inversedBy="receivedDocuments")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Contragent::class, inversedBy: 'receivedDocuments')]
     private $cnt_receiver;
 
-    /**
-     * @ORM\OneToMany(targetEntity=DocProd::class, mappedBy="document")
-     */
+    #[ORM\OneToMany(targetEntity: DocProd::class, mappedBy: 'document')]
     private $products;
 
     public function __construct()

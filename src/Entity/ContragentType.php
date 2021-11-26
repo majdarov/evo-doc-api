@@ -8,27 +8,19 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-/**
- * @ORM\Entity(repositoryClass=ContragentTypeRepository::class)
- */
+#[ORM\Entity(repositoryClass: ContragentTypeRepository::class)]
 class ContragentType
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\Column(type: "uuid", unique: true)]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: "string", length: 255)]
     private $cnt_type;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Contragent::class, mappedBy="cnt_type")
-     */
+    #[ORM\OneToMany(targetEntity: Contragent::class, mappedBy: "cnt_type")]
     private $contragents;
 
     public function __construct()

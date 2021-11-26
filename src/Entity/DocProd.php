@@ -5,33 +5,23 @@ namespace App\Entity;
 use App\Repository\DocProdRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=DocProdRepository::class)
- */
+#[ORM\Entity(repositoryClass: 'DocProdRepository')]
 class DocProd
 {
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=Document::class, inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: 'Document', inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: \false)]
     private $document;
 
-    /**
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="documents")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: 'Product', inversedBy: 'documents')]
+    #[ORM\JoinColumn(nullable: \false)]
     private $product;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: 'float')]
     private $price;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: 'float')]
     private $amount;
 
     public function getDocument(): ?Document

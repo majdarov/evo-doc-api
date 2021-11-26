@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
-#[ORM\Entity('ProdCatRepository')]
+#[ORM\Entity(ProdCatRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
 #[ORM\DiscriminatorMap(['prod' => 'Product', 'cat' => 'Category'])]
@@ -20,7 +20,7 @@ class ProdCat
    #[ORM\Id]
    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
    #[ORM\Column(type: 'uuid', unique: \true)]
-   #[ORM\CustomIdGenerator('UuidGenerator')]
+   #[ORM\CustomIdGenerator(UuidGenerator::class)]
    protected $id;
 
    #[ORM\Column(type: 'string', length: 255)]
@@ -29,11 +29,12 @@ class ProdCat
    #[ORM\Column(type: 'integer')]
    protected $code;
 
-   #[ORM\ManyToOne(targetEntity: 'Category', inversedBy: 'members', cascade: ['persist', 'merge'])]
+   #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'members', cascade: ['persist', 'merge'])]
+   #[ORM\Column(nullable: true)]
    protected ?Category $parent;
 
    /** @var Barcode[] barcodes for this instance */
-   #[ORM\OneToMany(targetEntity: 'Barcode', mappedBy: 'instance', orphanRemoval: \true, cascade: ['persist', 'remove', 'merge'])]
+   #[ORM\OneToMany(targetEntity: Barcode::class, mappedBy: 'instance', orphanRemoval: \true, cascade: ['persist', 'remove', 'merge'])]
    public iterable $barcodes;
 
    public function __construct()
